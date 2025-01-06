@@ -2,6 +2,7 @@ package com.springRestApi.springRest.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -24,4 +25,45 @@ public class CourseServiceImpl implements IcourseService {
 		return list;
 	}
 
+	@Override
+	public Course getCourse(long courseId) {
+		
+		Course c = null;
+		
+		for(Course course:list) {
+			
+			if(course.getId() == courseId) {
+				c = course;
+				break;
+			}
+		}
+		return c;
+	}
+
+	@Override
+	public Course addCourse(Course course) {
+		
+		list.add(course);
+		// TODO Auto-generated method stub
+		return course;
+	}
+	/**
+	 * e-> is an lambda that we have use in the foreach loop
+	 */
+	@Override
+	public Course updateCourse(Course course) {
+		list.forEach(e-> {
+			if(e.getId() == course.getId()) {
+				e.setTitle(course.getTitle());
+				e.setDescription(course.getDescription());
+			}
+		});
+		return course;
+	}
+
+	@Override
+	public void deleteCourse(long parseLong) {
+		// TODO Auto-generated method stub
+		list = this.list.stream().filter(e->e.getId()!= parseLong).collect(Collectors.toList());
+	}
 }
